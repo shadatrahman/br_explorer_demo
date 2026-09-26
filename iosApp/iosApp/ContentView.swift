@@ -1,18 +1,17 @@
-import UIKit
 import SwiftUI
-import ComposeApp
-
-struct ComposeView: UIViewControllerRepresentable {
-    func makeUIViewController(context: Context) -> UIViewController {
-        MainViewControllerKt.MainViewController()
-    }
-
-    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
-}
 
 struct ContentView: View {
+    @StateObject private var appState = AppState()
+
     var body: some View {
-        ComposeView()
-            .ignoresSafeArea(.all)
+        Group {
+            if appState.isAuthenticated {
+                RootTabView()
+            } else {
+                LoginView()
+            }
+        }
+        .environmentObject(appState)
+        .preferredColorScheme(appState.isDarkMode ? .dark : .light)
     }
 }
